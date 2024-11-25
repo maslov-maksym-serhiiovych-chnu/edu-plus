@@ -1,0 +1,23 @@
+services:
+  courses-api-db:
+    image: postgres:16.6
+    container_name: courses-api-db
+    restart: always
+    volumes:
+      - courses-api-data:/var/lib/postgresql/data
+    networks:
+      - edu-plus-network
+    environment:
+      POSTGRES_USER: courses-api-db
+      POSTGRES_PASSWORD: courses-api-db
+      POSTGRES_DB: courses-api-db
+    ports:
+      - "5432:5432"
+
+volumes:
+  courses-api-data:
+    name: courses-api-data
+
+networks:
+  edu-plus-network:
+    name: edu-plus-network
