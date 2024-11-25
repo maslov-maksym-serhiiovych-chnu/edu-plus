@@ -24,10 +24,27 @@ services:
       POSTGRES_DB: courses-api-db
     ports:
       - "5432:5432"
+  
+  tasks-api-db:
+    image: postgres:16.6
+    container_name: tasks-api-db
+    restart: always
+    volumes:
+      - tasks-api-data:/var/lib/postgresql/data
+    networks:
+      - edu-plus-network
+    environment:
+      POSTGRES_USER: tasks-api-db
+      POSTGRES_PASSWORD: tasks-api-db
+      POSTGRES_DB: tasks-api-db
+    ports:
+      - "5433:5432"
 
 volumes:
   courses-api-data:
     name: courses-api-data
+  tasks-api-data:
+    name: tasks-api-data
 
 networks:
   edu-plus-network:
