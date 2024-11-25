@@ -25,6 +25,17 @@ services:
     ports:
       - "5432:5432"
   
+  tasks-api:
+    build: tasks_api
+    container_name: tasks-api
+    restart: always
+    networks:
+      - edu-plus-network
+    ports:
+      - "8081:8081"
+    depends_on:
+      - tasks-api-db
+  
   tasks-api-db:
     image: postgres:16.6
     container_name: tasks-api-db
