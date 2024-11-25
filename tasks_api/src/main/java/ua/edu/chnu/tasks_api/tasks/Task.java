@@ -1,9 +1,6 @@
 package ua.edu.chnu.tasks_api.tasks;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,9 +10,13 @@ import lombok.Setter;
 @Table(name = "tasks")
 public class Task {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "content", nullable = false, length = Integer.MAX_VALUE)
-    private String content;
+    @Column(name = "name", nullable = false, length = 50)
+    private String name;
+
+    @Column(name = "description", length = Integer.MAX_VALUE)
+    private String description;
 }
