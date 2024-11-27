@@ -1,4 +1,15 @@
 services:
+  courses-api:
+    build: courses-api
+    container_name: courses-api
+    restart: always
+    networks:
+      - edu-plus-network
+    ports:
+      - "8080:8080"
+    depends_on:
+      - courses-api-db
+  
   courses-api-db:
     image: postgres:16.6
     container_name: courses-api-db
