@@ -1,5 +1,6 @@
 package ua.edu.chnu.courses_api.courses;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +16,8 @@ public class CourseController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CourseDTO>> readAll() {
-        var courses = service.readAll()
+    public ResponseEntity<List<CourseDTO>> readAll(@RequestParam String searchTerm, @RequestParam Sort.Direction sortDirection) {
+        var courses = service.readAll(searchTerm, sortDirection)
                 .stream()
                 .map(this::toDTO)
                 .toList();
@@ -49,7 +50,7 @@ public class CourseController {
     public ResponseEntity<Boolean> isExisting(@PathVariable Long id) {
         return ResponseEntity.ok(service.isExisting(id));
     }
-    
+
     private CourseDTO toDTO(Course course) {
         return new CourseDTO(course.getName(), course.getDescription());
     }

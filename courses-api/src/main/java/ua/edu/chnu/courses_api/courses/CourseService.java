@@ -1,5 +1,6 @@
 package ua.edu.chnu.courses_api.courses;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +17,19 @@ public class CourseService {
         return repository.save(course);
     }
 
-    public List<Course> readAll() {
+    public List<Course> readAll(String searchTerm, Sort.Direction sortDirection) {
+        if (searchTerm != null && !searchTerm.isEmpty() && sortDirection != null) {
+            return repository.findByNameContainingIgnoreCase(searchTerm, Sort.by(sortDirection));
+        }
+
+        if (searchTerm != null && !searchTerm.isEmpty()) {
+            return repository.findByNameContainingIgnoreCase(searchTerm);
+        }
+
+        if (sortDirection != null) {
+            return repository.findAll(Sort.by(sortDirection));
+        }
+
         return repository.findAll();
     }
 
@@ -43,7 +56,7 @@ public class CourseService {
         repository.delete(course);
         return true;
     }
-    
+
     public boolean isExisting(Long id) {
         return repository.existsById(id);
     }
