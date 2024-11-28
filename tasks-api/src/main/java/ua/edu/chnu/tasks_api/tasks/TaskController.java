@@ -51,10 +51,10 @@ public class TaskController {
     }
 
     private TaskDTO toDTO(Task task) {
-        return new TaskDTO(task.getName(), task.getDescription(), task.getCourseId());
+        return new TaskDTO(task.getName(), task.getDescription(), task.getCourseId(), task.getDeadline(), task.isCompleted());
     }
 
     private Task toModel(TaskDTO task) {
-        return new Task(task.name(), task.description(), task.courseId());
+        return new Task(task.name(), task.description(), task.courseId(), task.deadline(), task.completed());
     }
 }

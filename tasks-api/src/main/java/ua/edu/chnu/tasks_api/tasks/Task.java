@@ -2,6 +2,8 @@ package ua.edu.chnu.tasks_api.tasks;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "tasks")
 public class Task {
@@ -18,13 +20,21 @@ public class Task {
     @Column(nullable = false)
     private Long courseId;
 
+    @Column(nullable = false)
+    private LocalDateTime deadline;
+
+    @Column(nullable = false)
+    public boolean completed = false;
+
     public Task() {
     }
 
-    public Task(String name, String description, Long courseId) {
+    public Task(String name, String description, Long courseId, LocalDateTime deadline, boolean completed) {
         this.name = name;
         this.description = description;
         this.courseId = courseId;
+        this.deadline = deadline;
+        this.completed = completed;
     }
 
     public void setId(Long id) {
@@ -41,5 +51,13 @@ public class Task {
 
     public Long getCourseId() {
         return courseId;
+    }
+
+    public LocalDateTime getDeadline() {
+        return deadline;
+    }
+
+    public boolean isCompleted() {
+        return completed;
     }
 }

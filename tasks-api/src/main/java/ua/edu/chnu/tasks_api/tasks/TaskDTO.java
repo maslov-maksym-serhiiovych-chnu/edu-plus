@@ -1,4 +1,6 @@
 package ua.edu.chnu.tasks_api.tasks;
 
-public record TaskDTO(String name, String description, Long courseId) {
+import java.time.LocalDateTime;
+
+public record TaskDTO(String name, String description, Long courseId, LocalDateTime deadline, boolean completed) {
 }
