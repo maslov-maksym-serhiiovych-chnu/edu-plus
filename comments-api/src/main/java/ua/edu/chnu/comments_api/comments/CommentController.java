@@ -32,7 +32,7 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<CommentResponse> create(@RequestBody CommentRequest comment) {
         Comment created = service.create(toModel(comment));
-        return ResponseEntity.ok(toResponse(created));
+        return created == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(toResponse(created));
     }
 
     @PutMapping("{id}")
