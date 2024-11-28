@@ -10,6 +10,17 @@ services:
     depends_on:
       - courses-api-db
   
+  comments-api:
+    build: comments-api
+    container_name: comments-api
+    restart: always
+    networks:
+      - edu-plus-network
+    ports:
+      - "8081:8081"
+    depends_on:
+      - comments-api-db
+  
   courses-api-db:
     image: postgres:16.6
     container_name: courses-api-db
@@ -24,10 +35,27 @@ services:
       POSTGRES_DB: courses-api-db
     ports:
       - "5432:5432"
+  
+  comments-api-db:
+    image: postgres:16.6
+    container_name: comments-api-db
+    restart: always
+    volumes:
+      - comments-api-data:/var/lib/postgresql/data
+    networks:
+      - edu-plus-network
+    environment:
+      POSTGRES_USER: comments-api-db
+      POSTGRES_PASSWORD: comments-api-db
+      POSTGRES_DB: comments-api-db
+    ports:
+      - "5433:5432"
 
 volumes:
   courses-api-data:
     name: courses-api-data
+  comments-api-data:
+    name: comments-api-data
 
 networks:
   edu-plus-network:
