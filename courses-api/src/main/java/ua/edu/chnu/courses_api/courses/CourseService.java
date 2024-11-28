@@ -17,17 +17,17 @@ public class CourseService {
         return repository.save(course);
     }
 
-    public List<Course> readAll(String name, Sort.Direction sortDirection) {
-        if (name != null && !name.isEmpty() && sortDirection != null) {
-            return repository.findByNameContainsIgnoreCase(name, Sort.by(sortDirection, "name"));
+    public List<Course> readAll(String name, Sort.Direction direction) {
+        if (name != null && !name.isEmpty() && direction != null) {
+            return repository.findByNameContainsIgnoreCase(name, Sort.by(direction, "name"));
         }
 
         if (name != null && !name.isEmpty()) {
             return repository.findByNameContainsIgnoreCase(name);
         }
 
-        if (sortDirection != null) {
-            return repository.findAll(Sort.by(sortDirection, "name"));
+        if (direction != null) {
+            return repository.findAll(Sort.by(direction, "name"));
         }
 
         return repository.findAll();
