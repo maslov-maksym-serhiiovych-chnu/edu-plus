@@ -15,28 +15,28 @@ public class CommentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CommentDTO>> readAll() {
+    public ResponseEntity<List<CommentResponse>> readAll() {
         var comments = service.readAll()
                 .stream()
-                .map(this::toDTO)
+                .map(this::toResponse)
                 .toList();
         return ResponseEntity.ok(comments);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<CommentDTO> read(@PathVariable Long id) {
+    public ResponseEntity<CommentResponse> read(@PathVariable Long id) {
         Comment comment = service.read(id);
-        return comment == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(toDTO(comment));
+        return comment == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(toResponse(comment));
     }
 
     @PostMapping
-    public ResponseEntity<CommentDTO> create(@RequestBody CommentDTO comment) {
+    public ResponseEntity<CommentResponse> create(@RequestBody CommentRequest comment) {
         Comment created = service.create(toModel(comment));
-        return ResponseEntity.ok(toDTO(created));
+        return ResponseEntity.ok(toResponse(created));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody CommentDTO comment) {
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody CommentRequest comment) {
         return service.update(id, toModel(comment)) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
@@ -45,11 +45,11 @@ public class CommentController {
         return service.delete(id) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
-    private CommentDTO toDTO(Comment comment) {
-        return new CommentDTO(comment.getComment(), comment.getTargetType(), comment.getTargetId());
+    private CommentResponse toResponse(Comment comment) {
+        return new CommentResponse(comment.getComment(), comment.getTargetType(), comment.getTargetId(), comment.getCreatedAt());
     }
 
-    private Comment toModel(CommentDTO comment) {
-        return new Comment(comment.comment(), comment.targetType(), comment.targetId());
+    private Comment toModel(CommentRequest request) {
+        return new Comment(request.comment(), request.targetType(), request.targetId());
     }
 }

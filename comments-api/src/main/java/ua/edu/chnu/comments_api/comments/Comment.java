@@ -1,6 +1,9 @@
 package ua.edu.chnu.comments_api.comments;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "comments")
@@ -18,6 +21,10 @@ public class Comment {
 
     @Column(nullable = false)
     private Long targetId;
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
     public Comment() {
     }
@@ -42,5 +49,9 @@ public class Comment {
 
     public Long getTargetId() {
         return targetId;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 }

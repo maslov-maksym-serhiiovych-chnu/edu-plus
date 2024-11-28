@@ -1,5 +1,6 @@
 package ua.edu.chnu.comments_api.comments;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ua.edu.chnu.comments_api.courses.CourseClient;
 import ua.edu.chnu.comments_api.tasks.TaskClient;
@@ -23,7 +24,7 @@ public class CommentService {
     }
 
     public List<Comment> readAll() {
-        return repository.findAll();
+        return repository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
     }
 
     public Comment read(Long id) {
