@@ -43,4 +43,8 @@ public class TaskService {
         repository.delete(task);
         return true;
     }
+    
+    public boolean isExisting(Long id) {
+        return repository.existsById(id);
+    }
 }

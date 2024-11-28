@@ -45,6 +45,11 @@ public class TaskController {
         return service.delete(id) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
+    @GetMapping("{id}/is-existing")
+    public ResponseEntity<Boolean> isExisting(@PathVariable Long id) {
+        return ResponseEntity.ok(service.isExisting(id));
+    }
+
     private TaskDTO toDTO(Task task) {
         return new TaskDTO(task.getName(), task.getDescription());
     }
