@@ -1,5 +1,6 @@
 package ua.edu.chnu.tasks_api.tasks;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +16,12 @@ public class TaskController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TaskDTO>> readAll() {
-        var tasks = service.readAll()
+    public ResponseEntity<List<TaskDTO>> readAll(@RequestParam(required = false) Long courseId,
+                                                 @RequestParam(required = false) String name,
+                                                 @RequestParam(required = false) boolean completed,
+                                                 @RequestParam(required = false) String sortBy,
+                                                 @RequestParam(required = false) Sort.Direction direction) {
+        var tasks = service.readAll(courseId, name, completed, sortBy, direction)
                 .stream()
                 .map(this::toDTO)
                 .toList();
