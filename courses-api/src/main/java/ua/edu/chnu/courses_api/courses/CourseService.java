@@ -18,15 +18,9 @@ public class CourseService {
     }
 
     public List<Course> readAll(String name, Sort.Direction direction) {
-        if (name != null && !name.isEmpty() && direction != null) {
-            return repository.findByNameContainsIgnoreCase(name, Sort.by(direction, "name"));
-        }
-
-        if (name != null && !name.isEmpty()) {
-            return repository.findByNameContainsIgnoreCase(name);
-        }
-
-        return direction == null ? repository.findAll() : repository.findAll(Sort.by(direction, "name"));
+        Sort sort = direction == null ? Sort.unsorted() : Sort.by(direction, "name");
+        return name == null || name.isEmpty() ? repository.findAll(sort) :
+                repository.findByNameContainsIgnoreCase(name, sort);
     }
 
     public Course read(Long id) {

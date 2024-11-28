@@ -8,7 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Long> {
-    List<Course> findByNameContainsIgnoreCase(String name);
-
     List<Course> findByNameContainsIgnoreCase(String name, Sort sort);
 }
