@@ -17,13 +17,13 @@ public class CourseService {
         return repository.save(course);
     }
 
-    public List<Course> readAll(String searchTerm, Sort.Direction sortDirection) {
-        if (searchTerm != null && !searchTerm.isEmpty() && sortDirection != null) {
-            return repository.findByNameContainingIgnoreCase(searchTerm, Sort.by(sortDirection, "name"));
+    public List<Course> readAll(String name, Sort.Direction sortDirection) {
+        if (name != null && !name.isEmpty() && sortDirection != null) {
+            return repository.findByNameContainsIgnoreCase(name, Sort.by(sortDirection, "name"));
         }
 
-        if (searchTerm != null && !searchTerm.isEmpty()) {
-            return repository.findByNameContainingIgnoreCase(searchTerm);
+        if (name != null && !name.isEmpty()) {
+            return repository.findByNameContainsIgnoreCase(name);
         }
 
         if (sortDirection != null) {
