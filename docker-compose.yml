@@ -32,6 +32,15 @@ services:
     depends_on:
       - tasks-api-db
   
+  api-gateway:
+    build: api-gateway
+    container_name: api-gateway
+    restart: always
+    networks:
+      - edu-plus-network
+    ports:
+      - "9000:9000"
+  
   courses-api-db:
     image: postgres:16.6
     container_name: courses-api-db
