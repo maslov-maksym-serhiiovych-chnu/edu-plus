@@ -45,6 +45,11 @@ public class CourseController {
         return service.delete(id) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
+    @GetMapping("{id}/is-existing")
+    public ResponseEntity<Boolean> isExisting(@PathVariable Long id) {
+        return ResponseEntity.ok(service.isExisting(id));
+    }
+    
     private CourseDTO toDTO(Course course) {
         return new CourseDTO(course.getName(), course.getDescription());
     }

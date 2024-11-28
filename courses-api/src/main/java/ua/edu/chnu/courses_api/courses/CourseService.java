@@ -43,4 +43,8 @@ public class CourseService {
         repository.delete(course);
         return true;
     }
+    
+    public boolean isExisting(Long id) {
+        return repository.existsById(id);
+    }
 }
