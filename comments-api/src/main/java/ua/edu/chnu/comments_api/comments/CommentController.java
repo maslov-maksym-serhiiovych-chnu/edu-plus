@@ -46,10 +46,10 @@ public class CommentController {
     }
 
     private CommentDTO toDTO(Comment comment) {
-        return new CommentDTO(comment.getComment());
+        return new CommentDTO(comment.getComment(), comment.getTargetType(), comment.getTargetId());
     }
 
     private Comment toModel(CommentDTO comment) {
-        return new Comment(comment.comment());
+        return new Comment(comment.comment(), comment.targetType(), comment.targetId());
     }
 }
