@@ -26,11 +26,7 @@ public class CourseService {
             return repository.findByNameContainsIgnoreCase(name);
         }
 
-        if (direction != null) {
-            return repository.findAll(Sort.by(direction, "name"));
-        }
-
-        return repository.findAll();
+        return direction == null ? repository.findAll() : repository.findAll(Sort.by(direction, "name"));
     }
 
     public Course read(Long id) {
