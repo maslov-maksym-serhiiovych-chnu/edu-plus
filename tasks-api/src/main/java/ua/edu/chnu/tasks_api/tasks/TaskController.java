@@ -32,7 +32,7 @@ public class TaskController {
     @PostMapping
     public ResponseEntity<TaskDTO> create(@RequestBody TaskDTO task) {
         Task created = service.create(toModel(task));
-        return ResponseEntity.ok(toDTO(created));
+        return created == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(toDTO(created));
     }
 
     @PutMapping("{id}")
@@ -51,10 +51,10 @@ public class TaskController {
     }
 
     private TaskDTO toDTO(Task task) {
-        return new TaskDTO(task.getName(), task.getDescription());
+        return new TaskDTO(task.getName(), task.getDescription(), task.getCourseId());
     }
 
     private Task toModel(TaskDTO task) {
-        return new Task(task.name(), task.description());
+        return new Task(task.name(), task.description(), task.courseId());
     }
 }

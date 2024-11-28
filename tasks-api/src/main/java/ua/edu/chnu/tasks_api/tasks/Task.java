@@ -15,12 +15,16 @@ public class Task {
     @Column(length = 5000)
     private String description;
 
+    @Column(nullable = false)
+    private Long courseId;
+
     public Task() {
     }
 
-    public Task(String name, String description) {
+    public Task(String name, String description, Long courseId) {
         this.name = name;
         this.description = description;
+        this.courseId = courseId;
     }
 
     public void setId(Long id) {
@@ -33,5 +37,9 @@ public class Task {
 
     public String getDescription() {
         return description;
+    }
+
+    public Long getCourseId() {
+        return courseId;
     }
 }
