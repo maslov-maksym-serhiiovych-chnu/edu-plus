@@ -16,7 +16,8 @@ public class CourseController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CourseDTO>> readAll(@RequestParam String searchTerm, @RequestParam Sort.Direction sortDirection) {
+    public ResponseEntity<List<CourseDTO>> readAll(@RequestParam String searchTerm,
+                                                   @RequestParam(required = false) Sort.Direction sortDirection) {
         var courses = service.readAll(searchTerm, sortDirection)
                 .stream()
                 .map(this::toDTO)

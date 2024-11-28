@@ -19,7 +19,7 @@ public class CourseService {
 
     public List<Course> readAll(String searchTerm, Sort.Direction sortDirection) {
         if (searchTerm != null && !searchTerm.isEmpty() && sortDirection != null) {
-            return repository.findByNameContainingIgnoreCase(searchTerm, Sort.by(sortDirection));
+            return repository.findByNameContainingIgnoreCase(searchTerm, Sort.by(sortDirection, "name"));
         }
 
         if (searchTerm != null && !searchTerm.isEmpty()) {
@@ -27,7 +27,7 @@ public class CourseService {
         }
 
         if (sortDirection != null) {
-            return repository.findAll(Sort.by(sortDirection));
+            return repository.findAll(Sort.by(sortDirection, "name"));
         }
 
         return repository.findAll();
