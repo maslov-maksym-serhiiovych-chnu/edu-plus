@@ -32,17 +32,6 @@ services:
     depends_on:
       - tasks-api-db
   
-  users-api:
-    build: users-api
-    container_name: users-api
-    restart: always
-    networks:
-      - edu-plus-network
-    ports:
-      - "8083:8083"
-    depends_on:
-      - users-api-db
-  
   api-gateway:
     build: api-gateway
     container_name: api-gateway
@@ -96,21 +85,6 @@ services:
       POSTGRES_DB: tasks-api-db
     ports:
       - "5434:5432"
-  
-  users-api-db:
-    image: postgres:16.6
-    container_name: users-api-db
-    restart: always
-    volumes:
-      - users-api-data:/var/lib/postgresql/data
-    networks:
-      - edu-plus-network
-    environment:
-      POSTGRES_USER: users-api-db
-      POSTGRES_PASSWORD: users-api-db
-      POSTGRES_DB: users-api-db
-    ports:
-      - "5435:5432"
 
 volumes:
   courses-api-data:
@@ -119,8 +93,6 @@ volumes:
     name: comments-api-data
   tasks-api-data:
     name: tasks-api-data
-  users-api-data:
-    name: users-api-data
 
 networks:
   edu-plus-network:
