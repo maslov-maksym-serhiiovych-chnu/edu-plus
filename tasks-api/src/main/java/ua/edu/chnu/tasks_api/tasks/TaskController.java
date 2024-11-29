@@ -19,7 +19,7 @@ public class TaskController {
     public ResponseEntity<List<TaskResponse>> readAll(@RequestParam(required = false) Long courseId,
                                                       @RequestParam(required = false) String name,
                                                       @RequestParam(required = false) Boolean completed,
-                                                      @RequestParam(required = false) String sortBy,
+                                                      @RequestParam(required = false) SortBy sortBy,
                                                       @RequestParam(required = false) Sort.Direction direction) {
         var tasks = service.readAll(courseId, name, completed, sortBy, direction)
                 .stream()

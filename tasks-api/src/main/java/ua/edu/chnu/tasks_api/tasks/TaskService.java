@@ -20,15 +20,8 @@ public class TaskService {
         return isExistingCourseId(task) ? repository.save(task) : null;
     }
 
-    public List<Task> readAll(Long courseId, String name, Boolean completed, String sortBy, Sort.Direction direction) {
-        Sort sort = Sort.unsorted();
-        if (sortBy != null && !sortBy.isEmpty() && direction != null) {
-            sort = Sort.by(direction, sortBy);
-        }
-
-        if (sortBy != null && !sortBy.isEmpty()) {
-            sort = Sort.by(sortBy);
-        }
+    public List<Task> readAll(Long courseId, String name, Boolean completed, SortBy sortBy, Sort.Direction direction) {
+        Sort sort = sortBy == null || direction == null ? Sort.unsorted() : Sort.by(direction, sortBy.getProperty());
 
         if (courseId != null && name != null && !name.isEmpty() && completed != null) {
             return repository.findByCourseIdAndNameContainsIgnoreCaseAndCompleted(courseId, name, completed, sort);
