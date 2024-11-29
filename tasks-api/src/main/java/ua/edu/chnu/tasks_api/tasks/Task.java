@@ -24,17 +24,19 @@ public class Task {
     private LocalDateTime deadline;
 
     @Column(nullable = false)
-    public boolean completed = false;
+    private Boolean completed = false;
+
+    @Column
+    private Integer grade;
 
     public Task() {
     }
 
-    public Task(String name, String description, Long courseId, LocalDateTime deadline, boolean completed) {
+    public Task(String name, String description, Long courseId, LocalDateTime deadline) {
         this.name = name;
         this.description = description;
         this.courseId = courseId;
         this.deadline = deadline;
-        this.completed = completed;
     }
 
     public void setId(Long id) {
@@ -57,7 +59,22 @@ public class Task {
         return deadline;
     }
 
-    public boolean isCompleted() {
+    public Boolean isCompleted() {
         return completed;
+    }
+
+    public void setCompleted(Boolean completed) {
+        this.completed = completed;
+    }
+
+    public Integer getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Integer grade) {
+        if (grade < 0 || grade > 100) {
+            return;
+        }
+        this.grade = grade;
     }
 }

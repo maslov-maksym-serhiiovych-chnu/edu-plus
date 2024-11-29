@@ -20,8 +20,8 @@ public class TaskService {
         return isExistingCourseId(task) ? repository.save(task) : null;
     }
 
-    public List<Task> readAll(Long courseId, String name, boolean completed, String sortBy, Sort.Direction direction) {
-        Sort sort = null;
+    public List<Task> readAll(Long courseId, String name, Boolean completed, String sortBy, Sort.Direction direction) {
+        Sort sort = Sort.unsorted();
         if (sortBy != null && !sortBy.isEmpty() && direction != null) {
             sort = Sort.by(direction, sortBy);
         }
@@ -30,63 +30,31 @@ public class TaskService {
             sort = Sort.by(sortBy);
         }
 
-        if (courseId != null && name != null && !name.isEmpty() && completed && sort != null) {
-            return repository.findByCourseIdAndNameContainsIgnoreCaseAndCompleted(courseId, name, true, sort);
-        }
-
-        if (courseId != null && name != null && !name.isEmpty() && completed) {
-            return repository.findByCourseIdAndNameContainsIgnoreCaseAndCompleted(courseId, name, true);
-        }
-
-        if (courseId != null && name != null && !name.isEmpty() && sort != null) {
-            return repository.findByCourseIdAndNameContainsIgnoreCase(courseId, name, sort);
+        if (courseId != null && name != null && !name.isEmpty() && completed != null) {
+            return repository.findByCourseIdAndNameContainsIgnoreCaseAndCompleted(courseId, name, completed, sort);
         }
 
         if (courseId != null && name != null && !name.isEmpty()) {
-            return repository.findByCourseIdAndNameContainsIgnoreCase(courseId, name);
+            return repository.findByCourseIdAndNameContainsIgnoreCase(courseId, name, sort);
         }
 
-        if (courseId != null && completed && sort != null) {
-            return repository.findByCourseIdAndCompleted(courseId, true, sort);
+        if (courseId != null && completed != null) {
+            return repository.findByCourseIdAndCompleted(courseId, completed, sort);
         }
 
-        if (courseId != null && completed) {
-            return repository.findByCourseIdAndCompleted(courseId, true);
-        }
-
-        if (name != null && !name.isEmpty() && completed && sort != null) {
-            return repository.findByNameContainsIgnoreCaseAndCompleted(name, true, sort);
-        }
-
-        if (name != null && !name.isEmpty() && completed) {
-            return repository.findByNameContainsIgnoreCaseAndCompleted(name, true);
-        }
-
-        if (courseId != null && sort != null) {
-            return repository.findByCourseId(courseId, sort);
+        if (name != null && !name.isEmpty() && completed != null) {
+            return repository.findByNameContainsIgnoreCaseAndCompleted(name, completed, sort);
         }
 
         if (courseId != null) {
-            return repository.findByCourseId(courseId);
-        }
-
-        if (name != null && !name.isEmpty() && sort != null) {
-            return repository.findByNameContainsIgnoreCase(name, sort);
+            return repository.findByCourseId(courseId, sort);
         }
 
         if (name != null && !name.isEmpty()) {
-            return repository.findByNameContainsIgnoreCase(name);
+            return repository.findByNameContainsIgnoreCase(name, sort);
         }
 
-        if (completed && sort != null) {
-            return repository.findByCompleted(true, sort);
-        }
-
-        if (completed) {
-            return repository.findByCompleted(true);
-        }
-
-        return sort == null ? repository.findAll() : repository.findAll(sort);
+        return completed == null ? repository.findAll(sort) : repository.findByCompleted(completed, sort);
     }
 
     public Task read(Long id) {
@@ -110,6 +78,28 @@ public class TaskService {
         }
 
         repository.delete(task);
+        return true;
+    }
+
+    public boolean setCompleted(Long id) {
+        Task task = read(id);
+        if (task == null) {
+            return false;
+        }
+
+        task.setCompleted(true);
+        repository.save(task);
+        return true;
+    }
+
+    public boolean setGrade(Long id, Integer grade) {
+        Task task = read(id);
+        if (task == null) {
+            return false;
+        }
+
+        task.setGrade(grade);
+        repository.save(task);
         return true;
     }
 

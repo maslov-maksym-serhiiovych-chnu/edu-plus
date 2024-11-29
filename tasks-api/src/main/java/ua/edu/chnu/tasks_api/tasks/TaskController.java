@@ -16,32 +16,32 @@ public class TaskController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TaskDTO>> readAll(@RequestParam(required = false) Long courseId,
-                                                 @RequestParam(required = false) String name,
-                                                 @RequestParam(required = false) boolean completed,
-                                                 @RequestParam(required = false) String sortBy,
-                                                 @RequestParam(required = false) Sort.Direction direction) {
+    public ResponseEntity<List<TaskResponse>> readAll(@RequestParam(required = false) Long courseId,
+                                                      @RequestParam(required = false) String name,
+                                                      @RequestParam(required = false) Boolean completed,
+                                                      @RequestParam(required = false) String sortBy,
+                                                      @RequestParam(required = false) Sort.Direction direction) {
         var tasks = service.readAll(courseId, name, completed, sortBy, direction)
                 .stream()
-                .map(this::toDTO)
+                .map(this::toResponse)
                 .toList();
         return ResponseEntity.ok(tasks);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<TaskDTO> read(@PathVariable Long id) {
+    public ResponseEntity<TaskResponse> read(@PathVariable Long id) {
         Task task = service.read(id);
-        return task == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(toDTO(task));
+        return task == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(toResponse(task));
     }
 
     @PostMapping
-    public ResponseEntity<TaskDTO> create(@RequestBody TaskDTO task) {
+    public ResponseEntity<TaskResponse> create(@RequestBody TaskRequest task) {
         Task created = service.create(toModel(task));
-        return created == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(toDTO(created));
+        return created == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(toResponse(created));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody TaskDTO task) {
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody TaskRequest task) {
         return service.update(id, toModel(task)) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
@@ -55,11 +55,22 @@ public class TaskController {
         return ResponseEntity.ok(service.isExisting(id));
     }
 
-    private TaskDTO toDTO(Task task) {
-        return new TaskDTO(task.getName(), task.getDescription(), task.getCourseId(), task.getDeadline(), task.isCompleted());
+    @PutMapping("{id}/set-completed")
+    public ResponseEntity<Void> setCompleted(@PathVariable Long id) {
+        return service.setCompleted(id) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
-    private Task toModel(TaskDTO task) {
-        return new Task(task.name(), task.description(), task.courseId(), task.deadline(), task.completed());
+    @PutMapping("{id}/set-grade")
+    public ResponseEntity<Void> setGrade(@PathVariable Long id, @RequestParam Integer grade) {
+        return service.setGrade(id, grade) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    }
+
+    private TaskResponse toResponse(Task task) {
+        return new TaskResponse(task.getName(), task.getDescription(), task.getCourseId(), task.getDeadline(),
+                task.isCompleted(), task.getGrade());
+    }
+
+    private Task toModel(TaskRequest task) {
+        return new Task(task.name(), task.description(), task.courseId(), task.deadline());
     }
 }
