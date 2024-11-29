@@ -30,4 +30,11 @@ public class ApiGatewayConfig {
                 .route(RequestPredicates.path("api/tasks/**"), HandlerFunctions.http("http://tasks-api:8082"))
                 .build();
     }
+
+    @Bean
+    public RouterFunction<ServerResponse> routeUsersApi() {
+        return GatewayRouterFunctions.route("users-api")
+                .route(RequestPredicates.path("api/users/**"), HandlerFunctions.http("http://users-api:8083"))
+                .build();
+    }
 }
